@@ -23,6 +23,7 @@
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\ParticleEmitter.cpp" />
     <ClCompile Include="src\ParticleSystems.cpp" />
+    <ClCompile Include="src\ProcedualGen.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dep\AieUtilities\Gizmos.h" />
@@ -35,6 +36,7 @@
     <ClInclude Include="src\GrassBuilder.h" />
     <ClInclude Include="src\ParticleEmitter.h" />
     <ClInclude Include="src\ParticleSystems.h" />
+    <ClInclude Include="src\ProcedualGen.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4BF9EC28-4142-49B6-AF20-A4EFE87BC3FC}</ProjectGuid>
