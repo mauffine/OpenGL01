@@ -18,12 +18,11 @@
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\GLApplication.cpp" />
     <ClCompile Include="src\gl_core_4_4.c" />
-    <ClCompile Include="src\GPUParticleEmitter.cpp" />
     <ClCompile Include="src\GrassBuilder.cpp" />
     <ClCompile Include="src\Main.cpp" />
-    <ClCompile Include="src\ParticleEmitter.cpp" />
-    <ClCompile Include="src\ParticleSystems.cpp" />
-    <ClCompile Include="src\ProcedualGen.cpp" />
+    <ClCompile Include="src\Tutorials\GPUParticleEmitter.cpp" />
+    <ClCompile Include="src\Tutorials\ParticleEmitter.cpp" />
+    <ClCompile Include="src\Tutorials\ParticleSystems.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dep\AieUtilities\Gizmos.h" />
@@ -32,11 +31,10 @@
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\GLApplication.h" />
     <ClInclude Include="src\gl_core_4_4.h" />
-    <ClInclude Include="src\GPUParticleEmitter.h" />
     <ClInclude Include="src\GrassBuilder.h" />
-    <ClInclude Include="src\ParticleEmitter.h" />
-    <ClInclude Include="src\ParticleSystems.h" />
-    <ClInclude Include="src\ProcedualGen.h" />
+    <ClInclude Include="src\Tutorials\GPUParticleEmitter.h" />
+    <ClInclude Include="src\Tutorials\ParticleEmitter.h" />
+    <ClInclude Include="src\Tutorials\ParticleSystems.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{4BF9EC28-4142-49B6-AF20-A4EFE87BC3FC}</ProjectGuid>
@@ -77,11 +75,11 @@
       <AdditionalUsingDirectories>
       </AdditionalUsingDirectories>
       <PreprocessorDefinitions>GLM_FORCE_PURE;GLM_SWIZZLE;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>$(ProjectDir)dep\FBXLoader;$(ProjectDir)dep\tinyobjloader-master;$(ProjectDir)dep\stb-master;$(ProjectDir)dep\glm;$(ProjectDir)dep\AieUtilities;$(ProjectDir)src;$(ProjectDir)dep\glfw-3.1.bin.WIN32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)dep\opencl\inc;$(ProjectDir)dep\FBXLoader;$(ProjectDir)dep\tinyobjloader-master;$(ProjectDir)dep\stb-master;$(ProjectDir)dep\glm;$(ProjectDir)dep\AieUtilities;$(ProjectDir)src;$(ProjectDir)dep\glfw-3.1.bin.WIN32\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalLibraryDirectories>$(ProjectDir)dep\FBXLoader;$(ProjectDir)dep\glfw-3.1.bin.WIN32\lib-vc2013;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)dep\opencl\lib;$(ProjectDir)dep\FBXLoader;$(ProjectDir)dep\glfw-3.1.bin.WIN32\lib-vc2013;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>opengl32.lib;glfw3.lib;FBXLoader_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
