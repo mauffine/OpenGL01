@@ -1,4 +1,4 @@
-#include "ParticleSystems.h"
+#include "Tutorials/ParticleSystems.h"
 #include "FlyCamera.h"
 
 bool ParticleSystems::InitApp()
@@ -48,31 +48,30 @@ bool ParticleSystems::InitApp()
 	glDeleteShader(fs);
 	glDeleteShader(vs);
 
-	static const int Vector_Count = 5000000;
-	glm::vec4 m_vectors[Vector_Count];
+	//static const int Vector_Count = 5000000;
+	//glm::vec4 m_vectors[Vector_Count];
 
-	for (auto& v : m_vectors)
-		v = glm::vec4(1);
+	//for (auto& v : m_vectors)
+	//	v = glm::vec4(1);
 
-	double startTime = glfwGetTime();
+	//double startTime = glfwGetTime();
 
-	for (auto& v : m_vectors)
-		v = glm::normalize(v);
+	//for (auto& v : m_vectors)
+	//	v = glm::normalize(v);
 
-	double endTime = glfwGetTime();
-	printf("CPU duration %f\n", endTime - startTime);
+	//double endTime = glfwGetTime();
+	//printf("CPU duration %f\n", endTime - startTime);
 
-	// get the first platform
-	cl_int result = clGetPlatformIDs(1, &m_platform, nullptr);
-	if (result != CL_SUCCESS)
-		printf("clGetPlatformIDs failed %i\n", result);
+	//// get the first platform
+	//cl_int result = clGetPlatformIDs(1, &m_platform, nullptr);
+	//if (result != CL_SUCCESS)
+	//	printf("clGetPlatformIDs failed %i\n", result);
 
-	//get the first device on the plaform (default is GPU)
-	result = clGetDeviceIDs(m_platform, CL_DEVICE_TYPE_DEFAULT, 1, &m_device, nullptr);
+	////get the first device on the plaform (default is GPU)
+	//result = clGetDeviceIDs(m_platform, CL_DEVICE_TYPE_DEFAULT, 1, &m_device, nullptr);
 
-	if (result != CL_SUCCESS)
-		printf("clGetDeviceIDs failed %i\n", result);
-
+	//if (result != CL_SUCCESS)
+	//	printf("clGetDeviceIDs failed %i\n", result);
 
 	return true;
 }
