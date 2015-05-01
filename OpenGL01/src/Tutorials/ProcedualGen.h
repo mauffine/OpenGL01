@@ -7,6 +7,7 @@
 struct Vertex
 {
 	glm::vec4 position;
+	glm::vec2 UV;
 };
 class ProcedualGen
 {
@@ -17,6 +18,8 @@ public:
 	void Draw(const glm::mat4& a_projectionView);
 private:
 	Vertex* vertexData[20][20];
+
+	unsigned int m_vao, m_vbo, m_ibo;
 
 	int m_procGenShader;
 };

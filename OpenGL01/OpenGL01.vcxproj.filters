@@ -42,13 +42,7 @@
     <ClCompile Include="src\GrassBuilder.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Tutorials\GPUParticleEmitter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tutorials\ParticleEmitter.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\Tutorials\ParticleSystems.cpp">
+    <ClCompile Include="src\Tutorials\ProcedualGen.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,13 +68,7 @@
     <ClInclude Include="src\GrassBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Tutorials\GPUParticleEmitter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tutorials\ParticleEmitter.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\Tutorials\ParticleSystems.h">
+    <ClInclude Include="src\Tutorials\ProcedualGen.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

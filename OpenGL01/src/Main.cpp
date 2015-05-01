@@ -2,10 +2,10 @@
 #include "gl_core_4_4.h"
 #include <GLFW/glfw3.h>
 
-#include "Tutorials/ParticleSystems.h"
+#include "Tutorials/ProcedualGen.h"
 int main()
 {
-	ParticleSystems app;
+	ProcedualGen app;
 
 	app.Run();
 	return 0;

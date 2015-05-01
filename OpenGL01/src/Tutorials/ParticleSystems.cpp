@@ -11,7 +11,7 @@ bool ParticleSystems::InitApp()
 		1, 0.1f,
 		glm::vec4(.2f, .2f, .2f, 1), glm::vec4(.8f, .8f, .8f, .2f), "./res/shaders/GPUParticleCloud.vert");
 	m_rain = new GPUParticleEmitter();
-	m_rain->Initialise(3000,
+	m_rain->Initialise(500000,
 		.5f, 1.f,
 		5, 20,
 		.1f, 0.1f,

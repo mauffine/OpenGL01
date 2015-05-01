@@ -10,6 +10,7 @@ ProcedualGen::ProcedualGen()
 		}
 	}
 	m_procGenShader = glCreateProgram();
+
 }
 ProcedualGen::~ProcedualGen()
 {
@@ -19,5 +20,5 @@ void ProcedualGen::GenerateEnvironment()
 }
 void ProcedualGen::Draw(const glm::mat4& a_projectionView)
 {
-
+	
 }
