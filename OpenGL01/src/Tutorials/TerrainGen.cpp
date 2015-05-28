@@ -155,7 +155,7 @@ void TerrainGen::Draw()
 	glUniform1i(uniform, 0);
 
 	// Pass through Directional Light properties
-	glm::vec3 lightDir = glm::normalize(glm::vec3(1,-1,0));
+	glm::vec3 lightDir = -a_dirLight.GetDirection();
 	uniform = glGetUniformLocation(m_terrainGenProgram, "dirLight.direction");
 	glUniform3fv(uniform, 1, &lightDir[0]);
 

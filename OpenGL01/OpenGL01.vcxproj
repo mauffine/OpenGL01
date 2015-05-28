@@ -14,7 +14,9 @@
     <ClCompile Include="dep\AieUtilities\Gizmos_fix.cpp" />
     <ClCompile Include="dep\tinyobjloader-master\tiny_obj_loader.cc" />
     <ClCompile Include="src\Engine\BaseCamera.cpp" />
+    <ClCompile Include="src\Engine\DirectionalLight.cpp" />
     <ClCompile Include="src\Engine\FlyCamera.cpp" />
+    <ClCompile Include="src\Engine\Texture2D.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Engine\GLApplication.cpp" />
     <ClCompile Include="src\Engine\gl_core_4_4.c" />
@@ -25,7 +27,9 @@
   <ItemGroup>
     <ClInclude Include="dep\AieUtilities\Gizmos.h" />
     <ClInclude Include="src\Engine\BaseCamera.h" />
+    <ClInclude Include="src\Engine\DirectionalLight.h" />
     <ClInclude Include="src\Engine\FlyCamera.h" />
+    <ClInclude Include="src\Engine\Texture2D.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Engine\GLApplication.h" />
     <ClInclude Include="src\Engine\gl_core_4_4.h" />
