@@ -1,19 +1,18 @@
 #include "Game.h"
-Game::Game()
+
+bool InitApp()
 {
 
 }
-Game::~Game()
-{
-}
-void Game::Begin()
+void DeInitApp()
 {
 
 }
-void Game::End()
+bool Update(double dt)
 {
 
 }
-//Game* Game::GetInstance()
-//{
-//}
+void Draw()
+{
+
+}

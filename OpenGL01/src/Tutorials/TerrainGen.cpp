@@ -149,8 +149,6 @@ void TerrainGen::Draw()
 	uniform = glGetUniformLocation(m_terrainGenProgram, "material.specular");
 	glUniform4fv(uniform, 1, &glm::vec4(1.f, 1.f, 1.f, 1.f)[0]);
 
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_2D, m_diffuseID);
 	uniform = glGetUniformLocation(m_terrainGenProgram, "material.diffuseTex");
 	glUniform1i(uniform, 0);
 

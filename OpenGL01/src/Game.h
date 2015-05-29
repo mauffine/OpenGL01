@@ -1,14 +1,14 @@
 #include <iostream>
-class Game
+
+#include <Engine/GLApplication.h>
+class Game : public GLApplication
 {
 private:
-	Game();
-	~Game();
-	static Game* myInstance;
 protected:
 public:
-	static void Begin();
-	static void End();
-	static Game* GetInstance();
+	bool InitApp();
+	void DeInitApp();
+	bool Update(double dt);
+	void Draw();
 
 };
