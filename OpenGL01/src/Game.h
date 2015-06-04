@@ -7,6 +7,7 @@ class Game : public GLApplication
 private:
 protected:
 public:
+	Game() : GLApplication("Virtual World") {};
 	bool InitApp();
 	void DeInitApp();
 	bool Update(double dt);

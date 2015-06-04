@@ -24,6 +24,8 @@ class TerrainGen : public GLApplication
 
 {
 public:
+	TerrainGen();
+	~TerrainGen();
 	bool InitApp(const unsigned int& a_size, const DirectionalLight& a_dirLight);
 	void DeInitApp();
 

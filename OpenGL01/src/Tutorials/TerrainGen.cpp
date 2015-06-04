@@ -3,6 +3,18 @@ bool TerrainGen::InitApp(const unsigned int& a_size, const DirectionalLight& a_d
 {
 	return true;
 }
+TerrainGen::TerrainGen()
+{
+
+}
+TerrainGen::~TerrainGen()
+{
+	DeInitApp();
+}
+void TerrainGen::DeInitApp()
+{
+
+}
 void TerrainGen::GenerateEnvironment()
 {
 }
