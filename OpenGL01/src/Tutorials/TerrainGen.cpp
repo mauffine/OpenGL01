@@ -1,15 +1,7 @@
-#include "TerrainGen.h"
-bool TerrainGen::InitApp(unsigned int a_size)
+#include "Engine/TerrainGen.h"
+bool TerrainGen::InitApp(const unsigned int& a_size, const DirectionalLight& a_dirLight)
 {
-	//Set up Camera
-	FlyCamera* pCamera = new FlyCamera();
-	
-	pCamera->SetInputWindow(m_window);
-	
-	pCamera->SetupPerspective(glm::pi<float>() * 0.25f, 16.0f / 9.0f);
-	pCamera->LookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
-		
-	m_camera = pCamera;
+	return true;
 }
 void TerrainGen::GenerateEnvironment()
 {
@@ -123,19 +115,19 @@ void TerrainGen::GenerateBuffers()
 
 bool TerrainGen::Update(double dt)
 {
-	
+	return true;
 }
-void TerrainGen::Draw()
+void TerrainGen::Draw(const FlyCamera& a_camera, const DirectionalLight& a_dirLight)
 {
 	glUseProgram(m_terrainGenProgram);
 
 	// Pass through projection view matrix to shader
 	int uniform = glGetUniformLocation(m_terrainGenProgram, "projectionView");
-	glUniformMatrix4fv(uniform, 1, GL_FALSE, &m_camera->GetProjectionView()[0][0]);
+	glUniformMatrix4fv(uniform, 1, GL_FALSE, &a_camera.GetProjectionView()[0][0]);
 
 	// Update normal matrix
 	glm::mat3 normalMatrix = glm::inverseTranspose(
-		glm::mat3(m_camera->GetView()));
+		glm::mat3(a_camera.GetView()));
 	uniform = glGetUniformLocation(m_terrainGenProgram, "normalMat");
 	glUniformMatrix3fv(uniform, 1, GL_FALSE, &normalMatrix[0][0]);
 
@@ -174,7 +166,7 @@ void TerrainGen::Draw()
 
 	// Pass through camera position to shader for specular highlighting
 	uniform = glGetUniformLocation(m_terrainGenProgram, "cameraPos");
-	glUniform3fv(uniform, 1, &m_camera->GetPosition()[0]);
+	glUniform3fv(uniform, 1, &a_camera.GetPosition()[0]);
 
 	// Draw terrain
 	glBindVertexArray(m_vao);

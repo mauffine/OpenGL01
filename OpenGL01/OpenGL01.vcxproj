@@ -16,6 +16,7 @@
     <ClCompile Include="src\Engine\BaseCamera.cpp" />
     <ClCompile Include="src\Engine\DirectionalLight.cpp" />
     <ClCompile Include="src\Engine\FlyCamera.cpp" />
+    <ClCompile Include="src\Engine\TerrainGen.cpp" />
     <ClCompile Include="src\Engine\Texture2D.cpp" />
     <ClCompile Include="src\Game.cpp" />
     <ClCompile Include="src\Engine\GLApplication.cpp" />
@@ -29,6 +30,7 @@
     <ClInclude Include="src\Engine\BaseCamera.h" />
     <ClInclude Include="src\Engine\DirectionalLight.h" />
     <ClInclude Include="src\Engine\FlyCamera.h" />
+    <ClInclude Include="src\Engine\TerrainGen.h" />
     <ClInclude Include="src\Engine\Texture2D.h" />
     <ClInclude Include="src\Game.h" />
     <ClInclude Include="src\Engine\GLApplication.h" />
