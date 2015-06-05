@@ -11,6 +11,8 @@ bool Game::InitApp()
 	pCamera->LookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
 	m_camera = pCamera;
+	m_light = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.1f, glm::vec3(0, -1, 0), 1.0f, 1.0f);
+	m_environment.InitApp(100, *(m_light));
 	return true;
 }
 void Game::DeInitApp()
@@ -19,9 +21,10 @@ void Game::DeInitApp()
 }
 bool Game::Update(double dt)
 {
+	m_camera->Update(dt);
 	return true;
 }
 void Game::Draw()
 {
-
+	DisplayGrid(100);
 }

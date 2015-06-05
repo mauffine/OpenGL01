@@ -89,8 +89,8 @@ void ParticleSystems::Draw()
 
 	int loc = glGetUniformLocation(m_program, "projectionView");
 	glUniformMatrix4fv(loc, 1, GL_FALSE,
-
 		&m_camera->GetProjectionView()[0][0]);
+	
 	m_rain->Draw((float)glfwGetTime(),
 		m_camera->GetTransform(),
 		m_camera->GetProjectionView());

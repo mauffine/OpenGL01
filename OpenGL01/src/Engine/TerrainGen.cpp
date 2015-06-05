@@ -2,6 +2,12 @@
 bool TerrainGen::InitApp(const unsigned int& a_size, const DirectionalLight& a_dirLight)
 {
 	m_dirLight = a_dirLight;
+	m_vertexData = new Vertex[m_size * m_size];
+	m_indicies = new unsigned int[(m_size - 1) *
+		(m_size - 1) * 6];
+
+	GeneratePlane();
+	GenerateBuffers();
 	return true;
 }
 void TerrainGen::DeInitApp()
