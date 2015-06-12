@@ -70,24 +70,10 @@ void TerrainGen::GeneratePlane()
 	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_diffuseWidth, m_diffuseHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, m_diffuseTex);
 	
 	//Create and bind the Shaders
-	const char* vSource = *LoadShader("./res/shaders/EnvvShader.txt");
-	const char* fSource = *LoadShader("./res/shaders/EnvfShader.txt");
+	m_shaders.AddShader("./res/Shaders/EnvfShader.txt", ShaderType::FRAGMENT);
+	m_shaders.AddShader("./res/Shaders/EnvvShader.txt", ShaderType::VERTEX);
 
-	unsigned int vertexShader = glCreateShader(GL_VERTEX_SHADER);
-	glShaderSource(vertexShader, 1, (const char**)&vSource, 0);
-	glCompileShader(vertexShader);
-
-	unsigned int fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
-	glShaderSource(fragmentShader, 1, (const char**)&fSource, 0);
-	glCompileShader(fragmentShader);
-
-	m_terrainGenProgram = glCreateProgram();
-	glAttachShader(m_terrainGenProgram, vertexShader);
-	glAttachShader(m_terrainGenProgram, fragmentShader);
-	glLinkProgram(m_terrainGenProgram);
-
-	glDeleteShader(vertexShader);
-	glDeleteShader(fragmentShader);
+	m_shaders.LinkProgram();
 }
 void TerrainGen::GenerateBuffers()
 {
@@ -130,24 +116,21 @@ bool TerrainGen::Update(double dt)
 }
 void TerrainGen::Draw(const FlyCamera& a_camera, const DirectionalLight& a_dirLight)
 {
-	glUseProgram(m_terrainGenProgram);
+	m_shaders.Bind();
 
 	// Pass through projection view matrix to shader
-	int uniform = glGetUniformLocation(m_terrainGenProgram, "projectionView");
-	glUniformMatrix4fv(uniform, 1, GL_FALSE, &a_camera.GetProjectionView()[0][0]);
+	glUniformMatrix4fv(m_shaders.GetUniform("projectionView"),
+		1, GL_FALSE, &a_camera.GetProjectionView()[0][0]);
 
 	// Update normal matrix
 	glm::mat3 normalMatrix = glm::inverseTranspose(
 		glm::mat3(a_camera.GetView()));
-	uniform = glGetUniformLocation(m_terrainGenProgram, "normalMat");
-	glUniformMatrix3fv(uniform, 1, GL_FALSE, &normalMatrix[0][0]);
+	glUniformMatrix3fv(m_shaders.GetUniform("normalMat"), 1, GL_FALSE, &normalMatrix[0][0]);
 
 	// Set material
-	uniform = glGetUniformLocation(m_terrainGenProgram, "material.ambient");
-	glUniform4fv(uniform, 1, &glm::vec4(1.f, 1.f, 1.f, 1.f)[0]);
+	glUniform4fv(m_shaders.GetUniform("material.ambient"), 1, &glm::vec4(1.f, 1.f, 1.f, 1.f)[0]);
 
-	uniform = glGetUniformLocation(m_terrainGenProgram, "material.diffuse");
-	glUniform4fv(uniform, 1, &glm::vec4(1.f, 1.f, 1.f, 1.f)[0]);
+	glUniform4fv(m_shaders.GetUniform("material.diffuse"), 1, &glm::vec4(1.f, 1.f, 1.f, 1.f)[0]);
 
 	uniform = glGetUniformLocation(m_terrainGenProgram, "material.specular");
 	glUniform4fv(uniform, 1, &glm::vec4(1.f, 1.f, 1.f, 1.f)[0]);
