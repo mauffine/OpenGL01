@@ -2,6 +2,7 @@
 
 #include <fstream>
 #include <iostream>
+#include <vector>
 
 #include <glm/glm.hpp>
 #include <glm/ext.hpp>
@@ -16,26 +17,25 @@
 #include "Engine/DirectionalLight.h"
 #include "Engine/Shader.h"
 
-struct Vertex
-{
-	glm::vec4 position;
-	glm::vec3 normal;
-	glm::vec2 texCoord;
-};
+
 class TerrainGen
 
 {
 public:
-	TerrainGen();
+	TerrainGen(const unsigned int& a_size, DirectionalLight* a_pDirLight);
 	~TerrainGen();
-	bool InitApp(const unsigned int& a_size, const DirectionalLight& a_dirLight);
-	void DeInitApp();
 
 	bool Update(double dt);
-	void Draw(const FlyCamera& a_camera, const DirectionalLight& a_dirLight);
+	void Draw(const FlyCamera& a_camera);
 
 	void GenerateEnvironment();
 private:
+	struct Vertex
+	{
+		glm::vec4 position;
+		glm::vec3 normal;
+		glm::vec2 texCoord;
+	};
 	Vertex* m_vertexData;
 	unsigned int* m_indicies;
 
@@ -51,8 +51,8 @@ private:
 	unsigned int m_diffuseID;
 	int m_diffuseHeight, m_diffuseWidth, m_imageType;
 
-	DirectionalLight m_dirLight;
-
 	Shader m_shaders;
+
+	DirectionalLight* m_pDirLight;
 
 };

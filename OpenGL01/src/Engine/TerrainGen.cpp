@@ -1,18 +1,17 @@
 #include "Engine/TerrainGen.h"
-bool TerrainGen::InitApp(const unsigned int& a_size, const DirectionalLight& a_dirLight)
+TerrainGen::TerrainGen(const unsigned int& a_size, DirectionalLight* a_pDirLight)
 {
-	m_dirLight = a_dirLight;
-	m_vertexData = new Vertex[m_size * m_size];
-	m_indicies = new unsigned int[(m_size - 1) *
-		(m_size - 1) * 6];
-
+	m_size = a_size;
 	GeneratePlane();
-	GenerateBuffers();
-	return true;
 }
-void TerrainGen::DeInitApp()
+TerrainGen::~TerrainGen()
 {
-
+	glDeleteBuffers(1, &m_vbo);
+	glDeleteBuffers(1, &m_ibo);
+	glDeleteVertexArrays(1, &m_vao);
+	
+	delete[] m_vertexData;
+	delete[] m_indicies;
 }
 void TerrainGen::GenerateEnvironment()
 {
@@ -28,7 +27,8 @@ void TerrainGen::GeneratePlane()
 		for (unsigned int column = 0; column < m_size; ++column)
 		{
 			//vertex position
-			glm::vec4 position((float)column - ((float)m_size / 2.f), 0, (float)row - ((float)m_size / 2.f), 1);
+			glm::vec4 position((float)column - ((float)m_size / 2.f), 0,
+				(float)row - ((float)m_size / 2.f), 1);
 
 			//vertex texture coord
 			glm::vec2 texCoord((float)column, (float)row);
@@ -114,7 +114,7 @@ bool TerrainGen::Update(double dt)
 {
 	return true;
 }
-void TerrainGen::Draw(const FlyCamera& a_camera, const DirectionalLight& a_dirLight)
+void TerrainGen::Draw(const FlyCamera& a_camera)
 {
 	m_shaders.Bind();
 
@@ -125,6 +125,7 @@ void TerrainGen::Draw(const FlyCamera& a_camera, const DirectionalLight& a_dirLi
 	// Update normal matrix
 	glm::mat3 normalMatrix = glm::inverseTranspose(
 		glm::mat3(a_camera.GetView()));
+
 	glUniformMatrix3fv(m_shaders.GetUniform("normalMat"), 1, GL_FALSE, &normalMatrix[0][0]);
 
 	// Set material
@@ -132,35 +133,26 @@ void TerrainGen::Draw(const FlyCamera& a_camera, const DirectionalLight& a_dirLi
 
 	glUniform4fv(m_shaders.GetUniform("material.diffuse"), 1, &glm::vec4(1.f, 1.f, 1.f, 1.f)[0]);
 
-	uniform = glGetUniformLocation(m_terrainGenProgram, "material.specular");
-	glUniform4fv(uniform, 1, &glm::vec4(1.f, 1.f, 1.f, 1.f)[0]);
+	glUniform4fv(m_shaders.GetUniform("material.specular"), 1, &glm::vec4(1.f, 1.f, 1.f, 1.f)[0]);
 
-	uniform = glGetUniformLocation(m_terrainGenProgram, "material.diffuseTex");
-	glUniform1i(uniform, 0);
+	glUniform1i(m_shaders.GetUniform("material.diffuseTex"), 0);
 
 	// Pass through Directional Light properties
-	glm::vec3 lightDir = -m_dirLight.GetDirection();
-	uniform = glGetUniformLocation(m_terrainGenProgram, "dirLight.direction");
-	glUniform3fv(uniform, 1, &lightDir[0]);
+	glm::vec3 lightDir = -m_pDirLight->GetDirection();
+	glUniform3fv(m_shaders.GetUniform("dirLight.direction"), 1, &lightDir[0]);
 
-	uniform = glGetUniformLocation(m_terrainGenProgram, "dirLight.ambient");
-	glUniform3fv(uniform, 1, &a_dirLight.GetColour()[0]);
+	glUniform3fv(m_shaders.GetUniform("dirLight.ambient"), 1, &m_pDirLight->GetColour()[0]);
 
-	uniform = glGetUniformLocation(m_terrainGenProgram, "dirLight.diffuse");
-	glUniform3fv(uniform, 1, &a_dirLight.GetColour()[0]);
+	glUniform3fv(m_shaders.GetUniform("dirLight.diffuse"), 1, &m_pDirLight->GetColour()[0]);
 
-	uniform = glGetUniformLocation(m_terrainGenProgram, "dirLight.ambientIntensity");
-	glUniform1f(uniform, a_dirLight.GetAmbientIntensity());
+	glUniform1f(m_shaders.GetUniform("dirLight.ambientIntensity"), m_pDirLight->GetAmbientIntensity());
 
-	uniform = glGetUniformLocation(m_terrainGenProgram, "dirLight.diffuseIntensity");
-	glUniform1f(uniform, a_dirLight.GetDiffuseIntensity());
+	glUniform1f(m_shaders.GetUniform("dirLight.diffuseIntensity"), m_pDirLight->GetDiffuseIntensity());
 
-	uniform = glGetUniformLocation(m_terrainGenProgram, "dirLight.specularIntensity");
-	glUniform1f(uniform, a_dirLight.GetSpecularIntensity());
+	glUniform1f(m_shaders.GetUniform("dirLight.specularIntensity"), m_pDirLight->GetSpecularIntensity());
 
 	// Pass through camera position to shader for specular highlighting
-	uniform = glGetUniformLocation(m_terrainGenProgram, "cameraPos");
-	glUniform3fv(uniform, 1, &a_camera.GetPosition()[0]);
+	glUniform3fv(m_shaders.GetUniform("cameraPos"), 1, &a_camera.GetPosition()[0]);
 
 	// Draw terrain
 	glBindVertexArray(m_vao);

@@ -56,7 +56,7 @@ bool Shader::AddShader(const std::string &a_file, const ShaderType &a_type){
 	std::string fileString = LoadFile(a_file, loadFail);
 	const char* file = fileString.c_str();
 	if (loadFail)
-		return;// Load error
+		return false;// Load error
 
 	// Create shader
 	unsigned int shader = 0;
@@ -78,7 +78,7 @@ bool Shader::AddShader(const std::string &a_file, const ShaderType &a_type){
 	if (CheckErrors(shader))
 	{
 		glDeleteShader(shader); // Compilation error...
-		return;
+		return false;
 	}
 
 	// Link to program

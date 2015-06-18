@@ -9,8 +9,9 @@
 class Game : public GLApplication
 {
 private:
-	TerrainGen m_environment;
-	DirectionalLight* m_light;
+	TerrainGen* m_pEnvironment;
+	DirectionalLight* m_pLight;
+	FlyCamera* m_pCamera;
 protected:
 public:
 	Game() : GLApplication("Virtual World") {};
