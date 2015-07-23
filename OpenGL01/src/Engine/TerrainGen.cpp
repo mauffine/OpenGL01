@@ -2,7 +2,10 @@
 TerrainGen::TerrainGen(const unsigned int& a_size, DirectionalLight* a_pDirLight)
 {
 	m_size = a_size;
+	m_pDirLight = a_pDirLight;
+	m_perlinTexture = 0;
 	GeneratePlane();
+	GeneratePerlinNoise(a_size);
 }
 TerrainGen::~TerrainGen()
 {
@@ -65,10 +68,18 @@ void TerrainGen::GeneratePlane()
 	//Load Texture and bind to an ID
 	unsigned char* m_diffuseTex = stbi_load("./res/textures/grass.tga", &m_diffuseWidth, &m_diffuseHeight, &m_imageType, STBI_default);
 	
+	if (m_diffuseTex == nullptr)
+		std::cout << "Texture Load Error" << std::endl;
+
 	glGenTextures(1, &m_diffuseID);
 	glBindTexture(GL_TEXTURE_2D, m_diffuseID);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, m_diffuseWidth, m_diffuseHeight, 0, GL_RGB, GL_UNSIGNED_BYTE, m_diffuseTex);
-	
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, m_diffuseWidth, m_diffuseHeight, 0, GL_RGBA, GL_UNSIGNED_BYTE, m_diffuseTex);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	stbi_image_free(m_diffuseTex);
+
 	//Create and bind the Shaders
 	m_shaders.AddShader("./res/Shaders/EnvfShader.txt", ShaderType::FRAGMENT);
 	m_shaders.AddShader("./res/Shaders/EnvvShader.txt", ShaderType::VERTEX);
@@ -78,9 +89,11 @@ void TerrainGen::GeneratePlane()
 void TerrainGen::GenerateBuffers()
 {
 	//bind the vertex array
+	glGenVertexArrays(1, &m_vao);
 	glBindVertexArray(m_vao);
 
 	//populate the VBO
+	glGenBuffers(1, &m_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 	glBufferData(GL_ARRAY_BUFFER, (m_size * m_size) * sizeof(Vertex),
 		m_vertexData, GL_DYNAMIC_DRAW);
@@ -99,6 +112,7 @@ void TerrainGen::GenerateBuffers()
 		(void*)(sizeof(glm::vec4) + sizeof(glm::vec3)));
 
 	// Populate the Index Buffer
+	glGenBuffers(1, &m_ibo);
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_ibo);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER,
 		(m_size - 1) * (m_size - 1) * 6 * sizeof(unsigned int), m_indicies, GL_STATIC_DRAW);
@@ -114,7 +128,7 @@ bool TerrainGen::Update(double dt)
 {
 	return true;
 }
-void TerrainGen::Draw(const FlyCamera& a_camera)
+void TerrainGen::Draw(const BaseCamera& a_camera)
 {
 	m_shaders.Bind();
 
@@ -158,4 +172,41 @@ void TerrainGen::Draw(const FlyCamera& a_camera)
 	glBindVertexArray(m_vao);
 	unsigned int indexCount = (m_size - 1) * (m_size - 1) * 6;
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
+}
+void TerrainGen::GeneratePerlinNoise(int a_dims)
+{
+	int dims = a_dims;
+	float *perlinData = new float[dims * dims];
+	float scale = (1.0f / dims) * 3;
+	int octaves = 6;
+
+	for (int x = 0; x < 64; ++x)
+	{
+		for (int y = 0; y < 64; ++y)
+		{
+			float amplitude = 1.f;
+			float persistance = 0.3f;
+			perlinData[y* dims + x] = 0;
+
+			for (int o = 0; o < octaves; ++o)
+			{
+				float freq = powf(2, (float)o);
+				float perlinSample = 
+					glm::perlin(glm::vec2((float)x, (float)y) * scale * freq) * 0.5f + 0.5f;
+				perlinData[y* dims + x] += perlinSample * amplitude;
+				amplitude *= persistance;
+			}
+		}
+	}
+	
+	glGenTextures(1, &m_perlinTexture);
+	glBindTexture(GL_TEXTURE_2D, m_perlinTexture);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, 64, 64, 0, GL_RED, GL_FLOAT, perlinData);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+	//Perlin noise texture passing into shader for height map
+	//glUniform1i(m_shaders.GetUniform("perlinTex"), m_perlinTexture);
 }

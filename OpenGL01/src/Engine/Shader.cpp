@@ -1,7 +1,7 @@
 #include "Engine/Shader.h"
 
 Shader::Shader(){
-
+	m_program = glCreateProgram();
 }
 Shader::~Shader(){
 

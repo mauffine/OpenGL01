@@ -10,7 +10,7 @@ bool Game::InitApp()
 	pCamera->SetupPerspective(glm::pi<float>() * 0.25f, 16.0f / 9.0f);
 	pCamera->LookAt(glm::vec3(10, 10, 10), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0));
 
-	m_pCamera = pCamera;
+	m_camera = pCamera;
 	m_pLight = new DirectionalLight(glm::vec3(1.0f, 1.0f, 1.0f), 0.1f, glm::vec3(0, -1, 0), 1.0f, 1.0f);
 	m_pEnvironment = new TerrainGen(100, m_pLight);
 	return true;
@@ -28,6 +28,6 @@ bool Game::Update(double dt)
 void Game::Draw()
 {
 	DisplayGrid(100);
-	m_pEnvironment->Draw(*m_pCamera);
+	m_pEnvironment->Draw(*m_camera);
 
 }

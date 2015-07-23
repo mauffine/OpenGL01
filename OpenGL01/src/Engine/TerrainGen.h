@@ -12,6 +12,7 @@
 #include <stb_image.h>
 
 #include "Engine/FlyCamera.h"
+#include "Engine/BaseCamera.h"
 #include "Engine/DirectionalLight.h"
 #include "Engine/GLApplication.h"
 #include "Engine/DirectionalLight.h"
@@ -26,7 +27,7 @@ public:
 	~TerrainGen();
 
 	bool Update(double dt);
-	void Draw(const FlyCamera& a_camera);
+	void Draw(const BaseCamera& a_camera);
 
 	void GenerateEnvironment();
 private:
@@ -41,12 +42,14 @@ private:
 
 	unsigned int m_size;
 	unsigned int m_vao, m_vbo, m_ibo;
+	unsigned int m_perlinTexture;
 
 	float m_seed;
 	
 
 	void GeneratePlane();
 	void GenerateBuffers();
+	void GeneratePerlinNoise(int a_dims);
 
 	unsigned int m_diffuseID;
 	int m_diffuseHeight, m_diffuseWidth, m_imageType;
