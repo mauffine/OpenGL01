@@ -5,7 +5,6 @@ TerrainGen::TerrainGen(const unsigned int& a_size, DirectionalLight* a_pDirLight
 	m_pDirLight = a_pDirLight;
 	m_perlinTexture = 0;
 	GeneratePlane();
-	GeneratePerlinNoise(a_size);
 }
 TerrainGen::~TerrainGen()
 {
@@ -24,6 +23,10 @@ void TerrainGen::GeneratePlane()
 	//set up the Vertex Data and the Index Array for the plane that's used as a height map Height map
 	m_vertexData = new Vertex[m_size * m_size];
 	m_indicies = new unsigned int[(m_size - 1) * (m_size - 1) * 6];
+	unsigned int perlinSize = m_size * m_size;
+	float* data = new float[perlinSize];
+
+	GeneratePerlinNoise(perlinSize, data);
 
 	for (unsigned int row = 0; row < m_size; ++row)
 	{
@@ -43,6 +46,11 @@ void TerrainGen::GeneratePlane()
 			m_vertexData[row * m_size + column].texCoord = texCoord;
 			m_vertexData[row * m_size + column].normal = normal;
 		}
+	}
+
+	for (int i = 0; i < m_size; ++i)
+	{
+		m_vertexData[i].position.y = data[i];
 	}
 	//builds the plane a quad at a time
 	unsigned int index = 0;
@@ -173,7 +181,7 @@ void TerrainGen::Draw(const BaseCamera& a_camera)
 	unsigned int indexCount = (m_size - 1) * (m_size - 1) * 6;
 	glDrawElements(GL_TRIANGLES, indexCount, GL_UNSIGNED_INT, 0);
 }
-void TerrainGen::GeneratePerlinNoise(int a_dims)
+void TerrainGen::GeneratePerlinNoise(int a_dims, float* a_data)
 {
 	int dims = a_dims;
 	float *perlinData = new float[dims * dims];
@@ -199,14 +207,4 @@ void TerrainGen::GeneratePerlinNoise(int a_dims)
 		}
 	}
 	
-	glGenTextures(1, &m_perlinTexture);
-	glBindTexture(GL_TEXTURE_2D, m_perlinTexture);
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_R32F, 64, 64, 0, GL_RED, GL_FLOAT, perlinData);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
-
-	//Perlin noise texture passing into shader for height map
-	//glUniform1i(m_shaders.GetUniform("perlinTex"), m_perlinTexture);
 }

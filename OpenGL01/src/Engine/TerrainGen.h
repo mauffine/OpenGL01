@@ -49,7 +49,7 @@ private:
 
 	void GeneratePlane();
 	void GenerateBuffers();
-	void GeneratePerlinNoise(int a_dims);
+	void GeneratePerlinNoise(int a_dims, float* a_data);
 
 	unsigned int m_diffuseID;
 	int m_diffuseHeight, m_diffuseWidth, m_imageType;
